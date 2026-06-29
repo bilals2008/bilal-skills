@@ -1,6 +1,6 @@
 # bilal-skills
 
-[![skills.sh](https://skills.sh/b/bilal-skills/bilal-skills)](https://skills.sh/bilal-skills/bilal-skills)
+[![skills.sh](https://skills.sh/b/bilals2008/bilal-skills)](https://skills.sh/bilals2008/bilal-skills)
 
 A collection of production-ready AI agent skills for TypeScript, frontend development, and software engineering best practices. Installable with a single command into Claude Code, Cursor, Windsurf, Codex, GitHub Copilot, and 70+ other AI coding agents.
 
@@ -17,26 +17,26 @@ A collection of production-ready AI agent skills for TypeScript, frontend develo
 Install all skills:
 
 ```bash
-npx skills add bilal-skills/bilal-skills
+npx skills add bilals2008/bilal-skills
 ```
 
 Install a specific skill:
 
 ```bash
-npx skills add bilal-skills/bilal-skills --skill typescript-best-practices
-npx skills add bilal-skills/bilal-skills --skill react-shadcn-ui-expert
+npx skills add bilals2008/bilal-skills --skill typescript-best-practices
+npx skills add bilals2008/bilal-skills --skill react-shadcn-ui-expert
 ```
 
 Install to a specific agent:
 
 ```bash
-npx skills add bilal-skills/bilal-skills -a claude-code -a cursor
+npx skills add bilals2008/bilal-skills -a claude-code -a cursor
 ```
 
 Install globally (available across all projects):
 
 ```bash
-npx skills add bilal-skills/bilal-skills -g
+npx skills add bilals2008/bilal-skills -g
 ```
 
 ## Usage
