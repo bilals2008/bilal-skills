@@ -7,9 +7,10 @@ A collection of production-ready AI agent skills for TypeScript, frontend develo
 ## Features
 
 - **TypeScript Best Practices** — Type-safe code patterns, strict mode configuration, branded types, discriminated unions, and performance optimization
+- **React + Shadcn UI Expert** — Build modern React apps with Vite, TypeScript, Tailwind CSS v4, and shadcn/ui
 - **Progressive Disclosure** — Skills follow the three-level loading system (metadata, instructions, bundled resources) to minimize context window usage
 - **Cross-Platform Compatible** — Works with every major AI coding agent including Claude Code, Codex, Cursor, Windsurf, GitHub Copilot, OpenCode, and more
-- **Well-Tested Patterns** — Based on official TypeScript team recommendations and community best practices
+- **Well-Tested Patterns** — Based on official team recommendations and community best practices
 
 ## Installation
 
@@ -23,6 +24,7 @@ Install a specific skill:
 
 ```bash
 npx skills add bilal-skills/bilal-skills --skill typescript-best-practices
+npx skills add bilal-skills/bilal-skills --skill react-shadcn-ui-expert
 ```
 
 Install to a specific agent:
@@ -39,7 +41,7 @@ npx skills add bilal-skills/bilal-skills -g
 
 ## Usage
 
-After installation, your AI agent will automatically use these skills when relevant tasks are detected. The skill's description field acts as a trigger — when you ask about TypeScript, type safety, or code quality, the agent will load and follow the skill's instructions.
+After installation, your AI agent will automatically use these skills when relevant tasks are detected. The skill's description field acts as a trigger — TypeScript-related tasks load the typescript-best-practices skill; React/shadcn tasks load react-shadcn-ui-expert.
 
 To verify installation:
 
@@ -81,15 +83,21 @@ bilal-skills/
 ├── .gitignore
 ├── skills.sh.json               # skills.sh page customization
 └── skills/
-    └── typescript-best-practices/
-        ├── SKILL.md             # Skill definition (name + description frontmatter)
-        ├── scripts/             # Helper scripts loaded on demand
-        │   └── validate-config.ts
-        ├── references/          # Reference docs loaded on demand
-        │   ├── patterns.md
-        │   └── performance.md
-        └── assets/              # Template files
-            └── tsconfig.base.json
+    ├── typescript-best-practices/
+    │   ├── SKILL.md             # Skill definition (name + description frontmatter)
+    │   ├── scripts/             # Helper scripts loaded on demand
+    │   │   └── validate-config.ts
+    │   ├── references/          # Reference docs loaded on demand
+    │   │   ├── patterns.md
+    │   │   └── performance.md
+    │   └── assets/              # Template files
+    │       └── tsconfig.base.json
+    └── react-shadcn-ui-expert/
+        ├── SKILL.md             # React + shadcn/ui skill
+        └── examples/            # Usage examples
+            ├── button.md
+            ├── form.md
+            └── dashboard.md
 ```
 
 ### File Descriptions

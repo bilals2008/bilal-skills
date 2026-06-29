@@ -8,6 +8,13 @@
       "skills": [
         "typescript-best-practices"
       ]
+    },
+    {
+      "title": "React",
+      "description": "Skills for building modern React applications with shadcn/ui and Tailwind CSS.",
+      "skills": [
+        "react-shadcn-ui-expert"
+      ]
     }
   ]
 }
