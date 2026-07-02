@@ -1,6 +1,5 @@
 # bilal-skills
 
-[![skills.sh](https://skills.sh/b/bilals2008/bilal-skills)](https://skills.sh/bilals2008/bilal-skills)
 
 A collection of production-ready AI agent skills for TypeScript, frontend development, and software engineering best practices. Installable with a single command into Claude Code, Cursor, Windsurf, Codex, GitHub Copilot, and 70+ other AI coding agents.
 
