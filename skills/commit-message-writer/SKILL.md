@@ -1,6 +1,6 @@
 ---
 name: commit-message-writer
-description: "Write short, accurate Git commit messages in English. Use when the user says: commit karo, commit likho, changes commit karo, message likho, push karo, PR banao, ya koi bhi commit-related kaam ho. ALWAYS check the actual git diff first. ALWAYS write in English, even if the user speaks in Roman Urdu or any other language."
+description: "Write short, accurate Git commit messages in English. Use when the user says: commit karo, commit likho, changes commit karo, message likho, push karo, PR banao, ya koi bhi commit-related kaam ho. ALWAYS check the actual git diff first. ALWAYS write the commit message in English regardless of what language the user speaks."
 ---
 
 # Commit Message Writer
@@ -109,7 +109,7 @@ Use this format (Conventional Commits):
 Rules:
 - **Short description: max 10 words, no period at end**
 - Body (optional): max 2 lines, each line under 72 chars
-- **ALWAYS write in English** — even if user speaks in Roman Urdu, Hindi, or any other language
+- **ALWAYS write the commit message in English** — regardless of what language the user speaks (Urdu, Hindi, Chinese, Spanish, Arabic, etc.)
 - One logical change = one commit. Don't bundle unrelated changes together
 
 ### Step 5 — Show user before committing
