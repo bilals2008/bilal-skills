@@ -38,9 +38,15 @@ Look at:
 
 **NEVER guess or fabricate changes.** Only write what you actually see in the diff.
 
-### Step 3 — If many files changed, split into logical groups
+### Step 3 — Group changes wisely (1-2 commits preferred)
 
-Check `git diff --name-only` or `git diff --staged --name-only`. If 5+ files changed across different concerns, group them:
+Check `git diff --name-only` or `git diff --staged --name-only`.
+
+**First try to fit into 1-2 commits.** If all changes are related (e.g., all in the same feature or all are small fixes), one commit is better than 4 unnecessary splits.
+
+Split **only** when changes are clearly unrelated:
+- A new feature AND a docs update AND a dependency change → 2-3 commits max
+- All files in same component/feature → 1 commit
 
 | Group | Example files | Type |
 |-------|--------------|------|
@@ -51,10 +57,18 @@ Check `git diff --name-only` or `git diff --staged --name-only`. If 5+ files cha
 | Config/build | `package.json`, `.gitignore`, configs | `chore` |
 | Docs | `*.md`, `README`, comments | `docs` |
 
-**How to split:**
-1. Show user the groups you identified
-2. For each group, `git add <files-in-group>` then `git commit` separately
-3. If user says "sab ek saath karo", then one commit is fine
+**Decision guide:**
+- Sab files ek hi feature/component mein hain? → **1 commit**
+- Ek feature + kuch styling? → **1 commit** (feat: add feature and update styles)
+- Feature + docs + package change? → **2-3 commits max**
+- Sirf 2-4 files hain? → **1 commit** usually enough
+- Zayada files hain aur clearly different concerns? → **2-3 commits max**
+
+**How to execute:**
+1. Decide groups (aim for 1-2, max 3)
+2. Show plan to user: "Ye plan theek hai?"
+3. Wait for approval
+4. If user says "sab ek saath karo", one commit for everything
 
 **Example:** If `git diff --name-only` shows:
 ```
