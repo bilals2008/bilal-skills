@@ -15,6 +15,13 @@
       "skills": [
         "react-shadcn-ui-expert"
       ]
+    },
+    {
+      "title": "Workflow",
+      "description": "Skills for Git workflow, commit messages, and development process.",
+      "skills": [
+        "commit-message-writer"
+      ]
     }
   ]
 }
