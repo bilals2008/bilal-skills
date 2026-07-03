@@ -7,6 +7,7 @@ A collection of production-ready AI agent skills for TypeScript, frontend develo
 
 - **TypeScript Best Practices** — Type-safe code patterns, strict mode configuration, branded types, discriminated unions, and performance optimization
 - **React + Shadcn UI Expert** — Build modern React apps with Vite, TypeScript, Tailwind CSS v4, and shadcn/ui
+- **Git Leak Prevention** — Scan repositories for sensitive files (.env, secrets, API keys, build artifacts) and auto-fix .gitignore before pushing to GitHub
 - **Progressive Disclosure** — Skills follow the three-level loading system (metadata, instructions, bundled resources) to minimize context window usage
 - **Cross-Platform Compatible** — Works with every major AI coding agent including Claude Code, Codex, Cursor, Windsurf, GitHub Copilot, OpenCode, and more
 - **Well-Tested Patterns** — Based on official team recommendations and community best practices
@@ -24,6 +25,7 @@ Install a specific skill:
 ```bash
 npx skills add bilals2008/bilal-skills --skill typescript-best-practices
 npx skills add bilals2008/bilal-skills --skill react-shadcn-ui-expert
+npx skills add bilals2008/bilal-skills --skill git-leak-prevention
 ```
 
 Install to a specific agent:
@@ -91,12 +93,16 @@ bilal-skills/
     │   │   └── performance.md
     │   └── assets/              # Template files
     │       └── tsconfig.base.json
-    └── react-shadcn-ui-expert/
-        ├── SKILL.md             # React + shadcn/ui skill
-        └── examples/            # Usage examples
-            ├── button.md
-            ├── form.md
-            └── dashboard.md
+    ├── react-shadcn-ui-expert/
+    │   ├── SKILL.md             # React + shadcn/ui skill
+    │   └── examples/            # Usage examples
+    │       ├── button.md
+    │       ├── form.md
+    │       └── dashboard.md
+    └── git-leak-prevention/
+        ├── SKILL.md             # Security leak prevention skill
+        └── scripts/
+            └── check-leaks.ps1  # PowerShell scanner script
 ```
 
 ### File Descriptions
