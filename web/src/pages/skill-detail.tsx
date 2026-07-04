@@ -292,7 +292,13 @@ export function SkillDetailPage() {
           Installation
         </h2>
         <div className="flex items-center gap-2 rounded-md border bg-card px-3 sm:px-4 py-3 font-mono text-xs sm:text-sm shadow-sm">
-          <span className="flex-1 text-foreground break-all sm:break-normal">{skill.installCmd}</span>
+          <span className="flex-1 break-all sm:break-normal">
+            <span className="text-primary">npx</span>
+            <span className="text-foreground"> skills add </span>
+            <span className="text-cyan-400">bilals2008/bilal-skills</span>
+            <span className="text-muted-foreground"> --skill </span>
+            <span className="text-amber-400">{skill.slug}</span>
+          </span>
           <CopyButton text={skill.installCmd} />
         </div>
       </div>
