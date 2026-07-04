@@ -5,6 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { getSkillBySlug, skills } from "@/data/skills"
 import { useState } from "react"
 import { useToast } from "@/components/toast-provider"
+import { Highlight, themes } from "prism-react-renderer"
 
 const tagColors: Record<string, string> = {
   typescript: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -64,15 +65,29 @@ function renderMarkdown(content: string) {
   lines.forEach((line, i) => {
     if (line.startsWith("```")) {
       if (inCodeBlock) {
+        const lang = codeLanguage || "text"
         elements.push(
-          <div key={`code-${i}`} className="my-4 rounded-md border bg-card overflow-hidden">
-            <div className="flex items-center justify-between border-b bg-muted/50 px-4 py-1.5">
-              <span className="text-xs font-mono text-muted-foreground">{codeLanguage || "code"}</span>
+          <div key={`code-${i}`} className="my-3 sm:my-4 rounded-md border bg-card overflow-hidden">
+            <div className="flex items-center justify-between border-b bg-muted/50 px-3 sm:px-4 py-1.5">
+              <span className="text-xs font-mono text-muted-foreground">{lang}</span>
               <CopyButton text={codeContent.trim()} />
             </div>
-            <pre className="overflow-x-auto p-4 font-mono text-sm">
-              <code className="text-foreground">{codeContent.trim()}</code>
-            </pre>
+            <Highlight theme={themes.nightOwl} code={codeContent.trim()} language={lang}>
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre
+                  className="p-3 sm:p-4 font-mono text-xs sm:text-sm whitespace-pre-wrap break-words"
+                  style={{ ...style, background: "transparent" }}
+                >
+                  {tokens.map((line, lineIndex) => (
+                    <div key={lineIndex} {...getLineProps({ line })}>
+                      {line.map((token, tokenIndex) => (
+                        <span key={tokenIndex} {...getTokenProps({ token })} />
+                      ))}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
           </div>
         )
         codeContent = ""
@@ -92,19 +107,19 @@ function renderMarkdown(content: string) {
 
     if (line.startsWith("# ")) {
       elements.push(
-        <h1 key={i} className="mb-4 text-3xl font-bold tracking-tight font-serif text-primary">
+        <h1 key={i} className="mb-4 text-2xl sm:text-3xl font-bold tracking-tight font-serif text-primary">
           {line.slice(2)}
         </h1>
       )
     } else if (line.startsWith("## ")) {
       elements.push(
-        <h2 key={i} className="mb-3 mt-8 text-xl font-semibold font-serif">
+        <h2 key={i} className="mb-3 mt-6 sm:mt-8 text-lg sm:text-xl font-semibold font-serif">
           {line.slice(3)}
         </h2>
       )
     } else if (line.startsWith("### ")) {
       elements.push(
-        <h3 key={i} className="mb-2 mt-6 text-lg font-semibold">
+        <h3 key={i} className="mb-2 mt-5 sm:mt-6 text-base sm:text-lg font-semibold">
           {line.slice(4)}
         </h3>
       )
@@ -116,13 +131,13 @@ function renderMarkdown(content: string) {
       )
     } else if (line.startsWith("- ")) {
       elements.push(
-        <li key={i} className="ml-4 text-muted-foreground leading-relaxed">
+        <li key={i} className="ml-4 sm:ml-6 text-foreground leading-relaxed [&::marker]:text-primary">
           {renderInlineCode(line.slice(2))}
         </li>
       )
     } else if (line.match(/^\d+\. /)) {
       elements.push(
-        <li key={i} className="ml-4 text-muted-foreground leading-relaxed list-decimal">
+        <li key={i} className="ml-4 sm:ml-6 text-foreground leading-relaxed list-decimal [&::marker]:text-primary">
           {renderInlineCode(line.replace(/^\d+\. /, ""))}
         </li>
       )
@@ -142,7 +157,7 @@ function renderMarkdown(content: string) {
       elements.push(<div key={i} className="h-2" />)
     } else {
       elements.push(
-        <p key={i} className="text-muted-foreground leading-relaxed">
+        <p key={i} className="text-foreground/80 leading-relaxed">
           {renderInlineCode(line)}
         </p>
       )
@@ -172,7 +187,7 @@ export function SkillDetailPage() {
 
   if (!skill) {
     return (
-      <div className="mx-auto max-w-3xl px-6 py-20 text-center">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-16 sm:py-20 text-center">
         <h1 className="mb-3 text-2xl font-semibold">Skill not found</h1>
         <p className="mb-6 text-muted-foreground">No skill matches that slug.</p>
         <Button asChild>
@@ -185,45 +200,45 @@ export function SkillDetailPage() {
   const relatedSkills = skills.filter((s) => s.category === skill.category && s.slug !== skill.slug).slice(0, 2)
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
+      <div className="mb-6 sm:mb-8 flex items-center justify-between gap-2">
         <Link
           to="/"
-          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors shrink-0"
         >
           ← Back to skills
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           <img
             src={`https://github.com/${skill.author}.png`}
             alt={skill.author}
-            className="size-5 rounded-full border border-border"
+            className="size-5 rounded-full border border-border shrink-0"
           />
-          <span className="text-sm text-muted-foreground">{skill.author}</span>
+          <span className="text-sm text-muted-foreground truncate">{skill.author}</span>
         </div>
       </div>
 
-      <header className="mb-8">
+      <header className="mb-6 sm:mb-8">
         <div className="mb-3">
           <Badge variant="secondary">{skill.category}</Badge>
         </div>
-        <h1 className="mb-2 text-3xl font-semibold tracking-tight font-serif">{skill.name}</h1>
-        <p className="text-muted-foreground leading-relaxed">{skill.description}</p>
+        <h1 className="mb-2 text-2xl sm:text-3xl font-semibold tracking-tight font-serif">{skill.name}</h1>
+        <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{skill.description}</p>
       </header>
 
-      <Separator className="mb-8" />
+      <Separator className="mb-6 sm:mb-8" />
 
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-muted-foreground">
           Installation
         </h2>
-        <div className="flex items-center gap-2 rounded-md border bg-card px-4 py-3 font-mono text-sm shadow-sm">
-          <span className="flex-1 text-foreground">{skill.installCmd}</span>
+        <div className="flex items-center gap-2 rounded-md border bg-card px-3 sm:px-4 py-3 font-mono text-xs sm:text-sm shadow-sm">
+          <span className="flex-1 text-foreground break-all sm:break-normal">{skill.installCmd}</span>
           <CopyButton text={skill.installCmd} />
         </div>
       </div>
 
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-muted-foreground">
           Tags
         </h2>
@@ -231,7 +246,7 @@ export function SkillDetailPage() {
           {skill.tags.map((tag) => (
             <span
               key={tag}
-              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium transition-all ${
+              className={`inline-flex items-center rounded-full px-2.5 sm:px-3 py-1 text-xs font-medium transition-all ${
                 tagColors[tag] ?? "bg-muted text-muted-foreground"
               }`}
             >
@@ -241,26 +256,26 @@ export function SkillDetailPage() {
         </div>
       </div>
 
-      <Separator className="mb-8" />
+      <Separator className="mb-6 sm:mb-8" />
 
-      <article className="prose prose-neutral dark:prose-invert max-w-none">
+      <article className="prose prose-neutral dark:prose-invert max-w-none text-sm sm:text-base">
         {renderMarkdown(skill.skillContent)}
       </article>
 
       {relatedSkills.length > 0 && (
         <>
-          <Separator className="my-10" />
+          <Separator className="my-8 sm:my-10" />
           <section>
-            <h2 className="mb-4 text-xl font-semibold font-serif">Related Skills</h2>
+            <h2 className="mb-4 text-lg sm:text-xl font-semibold font-serif">Related Skills</h2>
             <div className="grid gap-3 sm:grid-cols-2">
               {relatedSkills.map((rs) => (
                 <Link
                   key={rs.slug}
                   to={`/skills/${rs.slug}`}
-                  className="group rounded-md border bg-card p-4 transition-all hover:border-primary/40 hover:shadow-md"
+                  className="group rounded-md border bg-card p-3 sm:p-4 transition-all hover:border-primary/40 hover:shadow-md"
                 >
                   <h3 className="font-medium group-hover:text-primary transition-colors">{rs.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{rs.description}</p>
+                  <p className="mt-1 text-xs sm:text-sm text-muted-foreground line-clamp-2">{rs.description}</p>
                 </Link>
               ))}
             </div>
