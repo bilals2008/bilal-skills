@@ -55,8 +55,13 @@ function CopyButton({ text }: { text: string }) {
   )
 }
 
+function stripFrontmatter(content: string): string {
+  return content.replace(/^---[\s\S]*?---\n*/, "")
+}
+
 function renderMarkdown(content: string) {
-  const lines = content.split("\n")
+  const clean = stripFrontmatter(content)
+  const lines = clean.split("\n")
   const elements: React.ReactNode[] = []
   let inCodeBlock = false
   let codeContent = ""

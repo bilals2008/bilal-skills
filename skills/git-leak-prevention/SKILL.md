@@ -1,6 +1,6 @@
 ---
 name: git-leak-prevention
-description: "Scan repositories for sensitive files (.env, secrets, API keys, build artifacts, node_modules, dist, releases) before pushing to GitHub. Automatically fix .gitignore to prevent leaks. Use when the user says: check karo koi secret toh nahi ja raha, env check karo, security check karo, gitignore fix karo, leak check karo, ya koi bhi security-related kaam ho."
+description: "Scan repositories for sensitive files (.env, secrets, API keys, build artifacts, node_modules, dist, releases) before pushing to GitHub. Automatically fix .gitignore to prevent leaks. Use when the user asks to check for secrets, scan for leaks, fix gitignore, or perform any security-related task."
 ---
 
 # Git Leak Prevention

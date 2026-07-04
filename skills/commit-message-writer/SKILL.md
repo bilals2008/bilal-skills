@@ -1,6 +1,6 @@
 ---
 name: commit-message-writer
-description: "Write short, accurate Git commit messages in English. Use when the user says: commit karo, commit likho, changes commit karo, message likho, push karo, PR banao, ya koi bhi commit-related kaam ho. ALWAYS check the actual git diff first. ALWAYS write the commit message in English regardless of what language the user speaks."
+description: "Write short, accurate Git commit messages in English. Use when the user asks to commit, create a PR, or write a commit message. ALWAYS check the actual git diff first. ALWAYS write the commit message in English regardless of what language the user speaks."
 ---
 
 # Commit Message Writer
@@ -58,17 +58,17 @@ Split **only** when changes are clearly unrelated:
 | Docs | `*.md`, `README`, comments | `docs` |
 
 **Decision guide:**
-- Sab files ek hi feature/component mein hain? → **1 commit**
-- Ek feature + kuch styling? → **1 commit** (feat: add feature and update styles)
+- All files in same feature/component? → **1 commit**
+- One feature + some styling? → **1 commit** (feat: add feature and update styles)
 - Feature + docs + package change? → **2-3 commits max**
-- Sirf 2-4 files hain? → **1 commit** usually enough
-- Zayada files hain aur clearly different concerns? → **2-3 commits max**
+- Only 2-4 files? → **1 commit** usually enough
+- Many files with clearly different concerns? → **2-3 commits max**
 
 **How to execute:**
 1. Decide groups (aim for 1-2, max 3)
-2. Show plan to user: "Ye plan theek hai?"
+2. Show plan to user
 3. Wait for approval
-4. If user says "sab ek saath karo", one commit for everything
+4. If user says "commit everything together", one commit for everything
 
 **Example:** If `git diff --name-only` shows:
 ```
@@ -114,12 +114,12 @@ Rules:
 
 ### Step 5 — Show user before committing
 
-Show the plan (splits + messages) and ask: "Ye plan theek hai?" Wait for approval before running `git commit`.
+Show the plan (splits + messages) and wait for approval before running `git commit`.
 
 ## Examples
 
-### User says in Roman Urdu:
-> "yaar ma nay button ka color change kiya ha aur kuch extra space hataya ha"
+### User says:
+> "I changed the button color and removed extra spacing"
 
 ### You write:
 ```
@@ -127,7 +127,7 @@ style(button): update color and remove extra spacing
 ```
 
 ### User says:
-> "commit karo sab kuch"
+> "commit everything"
 
 ### You check diff, find files:
 ```
@@ -143,10 +143,9 @@ README.md
 2. style: update button styling
 3. docs: update readme
 ```
-Then ask: "Ye plan theek hai? Sab ek saath commit karein ya alag?"
 
 ### User says:
-> "jo bhi changes hain commit kar do"
+> "commit all changes"
 
 ### You check diff, then:
 ```
@@ -155,11 +154,11 @@ refactor(api): clean up unused endpoints
 
 ## What NOT to do
 
-- ❌ Long commit messages like "This commit adds a new feature for the login functionality which includes..."
-- ❌ Fabricating changes you didn't see in the diff
-- ❌ Writing commit messages in Roman Urdu ("button ka color change kiya")
-- ❌ Writing "fix: fix some issues" — be specific about what was fixed
-- ❌ Writing commit for files that haven't changed
+- Long commit messages like "This commit adds a new feature for the login functionality which include..."
+- Fabricating changes you didn't see in the diff
+- Writing commit messages in any language other than English
+- Writing "fix: fix some issues" — be specific about what was fixed
+- Writing commit for files that haven't changed
 
 ## Expected Output
 
