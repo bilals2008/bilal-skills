@@ -90,8 +90,10 @@ export function HomePage() {
           before making changes.
         </p>
         <div className="flex items-center gap-2 rounded-md border border-border/60 bg-card px-4 py-3 font-mono text-sm">
-          <span className="flex-1 text-foreground">
-            npx skills add bilals2008/bilal-skills
+          <span className="flex-1">
+            <span className="text-primary">npx</span>
+            <span className="text-foreground"> skills add </span>
+            <span className="text-cyan-400">bilals2008/bilal-skills</span>
           </span>
           <CopyButton text="npx skills add bilals2008/bilal-skills" />
         </div>
