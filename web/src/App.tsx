@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ToastProvider } from "@/components/toast-provider"
 import { HomePage } from "@/pages/home"
 import { SkillDetailPage } from "@/pages/skill-detail"
+import { AuthorPage } from "@/pages/author"
 import { AboutPage } from "@/pages/about"
 import { ContributingPage } from "@/pages/contributing"
 import { ChangelogPage } from "@/pages/changelog"
@@ -22,6 +23,7 @@ export function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/skills/:slug" element={<SkillDetailPage />} />
+                <Route path="/author/:author" element={<AuthorPage />} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contributing" element={<ContributingPage />} />
                 <Route path="/changelog" element={<ChangelogPage />} />

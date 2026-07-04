@@ -297,12 +297,17 @@ export function SkillDetailPage() {
           ← Back to skills
         </Link>
         <div className="flex items-center gap-2 min-w-0">
-          <img
-            src={`https://github.com/${skill.author}.png`}
-            alt={skill.author}
-            className="size-5 rounded-full border border-border shrink-0"
-          />
-          <span className="text-sm text-muted-foreground truncate">{skill.author}</span>
+          <Link
+            to={`/author/${skill.author}`}
+            className="inline-flex items-center gap-2 group/author"
+          >
+            <img
+              src={`https://github.com/${skill.author}.png`}
+              alt={skill.author}
+              className="size-5 rounded-full border border-border shrink-0 ring-2 ring-transparent group-hover/author:ring-primary/30 transition-all"
+            />
+            <span className="text-sm text-muted-foreground truncate group-hover/author:text-foreground transition-colors">{skill.author}</span>
+          </Link>
         </div>
       </div>
 

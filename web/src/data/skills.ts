@@ -65,3 +65,11 @@ export function getSkillsByCategory(): Record<string, Skill[]> {
 export function getCategories(): string[] {
   return [...new Set(skills.map((s) => s.category))]
 }
+
+export function getSkillsByAuthor(author: string): Skill[] {
+  return skills.filter((s) => s.author === author)
+}
+
+export function getAuthors(): string[] {
+  return [...new Set(skills.map((s) => s.author))]
+}

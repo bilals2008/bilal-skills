@@ -31,7 +31,13 @@ export function SkillCard({ skill }: { skill: { slug: string; name: string; desc
               <span className={`size-2 rounded-full ${categoryDot[skill.category] ?? "bg-muted-foreground"}`} />
               {categoryLabel[skill.category] ?? skill.category.toLowerCase()}
             </div>
-            <span className="text-muted-foreground/70">@{skill.author}</span>
+            <Link
+              to={`/author/${skill.author}`}
+              onClick={(e) => e.stopPropagation()}
+              className="text-muted-foreground/70 hover:text-foreground transition-colors"
+            >
+              @{skill.author}
+            </Link>
           </div>
         </CardHeader>
       </Card>

@@ -2,10 +2,12 @@ import { useState, useMemo } from "react"
 import { Link } from "react-router-dom"
 import { skills, getCategories } from "@/data/skills"
 import { SkillCard } from "@/components/skills/skill-card"
+import { SkillCardSkeletonGrid } from "@/components/skills/skill-card-skeleton"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/toast-provider"
+import { useDebounce } from "@/lib/use-debounce"
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -49,6 +51,8 @@ export function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false)
 
+  const debouncedQuery = useDebounce(query, 300)
+
   const categories = useMemo(() => getCategories(), [])
 
   const filtered = useMemo(() => {
@@ -56,20 +60,23 @@ export function HomePage() {
     if (selectedCategory) {
       result = result.filter((s) => s.category === selectedCategory)
     }
-    if (query) {
-      const q = query.toLowerCase()
+    if (debouncedQuery) {
+      const q = debouncedQuery.toLowerCase()
       result = result.filter(
         (skill) =>
           skill.name.toLowerCase().includes(q) ||
           skill.description.toLowerCase().includes(q) ||
-          skill.tags.some((t) => t.toLowerCase().includes(q))
+          skill.tags.some((t) => t.toLowerCase().includes(q)) ||
+          skill.author.toLowerCase().includes(q)
       )
     }
     return result
-  }, [query, selectedCategory])
+  }, [debouncedQuery, selectedCategory])
 
   const visibleSkills = showAll ? filtered : filtered.slice(0, 20)
   const hasMore = filtered.length > 20
+
+  const isSearching = query !== debouncedQuery
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
@@ -111,20 +118,44 @@ export function HomePage() {
             <path d="M21 21l-4.35-4.35" />
           </svg>
           <Input
-            placeholder="Search by name, tag, or keyword..."
+            placeholder="Search by name, tag, author, or keyword..."
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="pl-9"
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setShowAll(false)
+            }}
+            className="pl-9 pr-9"
           />
+          {query && (
+            <button
+              onClick={() => {
+                setQuery("")
+                setShowAll(false)
+              }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
-        <span className="text-sm text-muted-foreground">
-          {filtered.length} {filtered.length === 1 ? "skill" : "skills"}
-        </span>
+        <div className="flex items-center gap-2">
+          {isSearching && (
+            <div className="size-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          )}
+          <span className="text-sm text-muted-foreground tabular-nums">
+            {filtered.length} {filtered.length === 1 ? "skill" : "skills"}
+          </span>
+        </div>
       </div>
 
       <div className="mb-8 flex flex-wrap gap-2">
         <button
-          onClick={() => setSelectedCategory(null)}
+          onClick={() => {
+            setSelectedCategory(null)
+            setShowAll(false)
+          }}
           className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-all ${
             selectedCategory === null
               ? "border-primary bg-primary/10 text-primary"
@@ -136,7 +167,10 @@ export function HomePage() {
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
+            onClick={() => {
+              setSelectedCategory(selectedCategory === cat ? null : cat)
+              setShowAll(false)
+            }}
             className={`rounded-md border px-3 py-1.5 text-sm font-medium transition-all ${
               selectedCategory === cat
                 ? categoryColors[cat] ?? "border-primary bg-primary/10 text-primary"
@@ -149,16 +183,47 @@ export function HomePage() {
       </div>
 
       <section>
-        {filtered.length === 0 ? (
+        {isSearching ? (
+          <SkillCardSkeletonGrid count={6} />
+        ) : filtered.length === 0 ? (
           <div className="py-20 text-center">
+            <div className="mb-4 inline-flex size-12 items-center justify-center rounded-full bg-muted">
+              <svg className="size-6 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+            </div>
             <p className="mb-2 text-lg font-medium">No skills found</p>
-            <p className="text-sm text-muted-foreground">Try a different search term or category.</p>
+            <p className="mb-4 text-sm text-muted-foreground">
+              {query
+                ? `No results for "${query}". Try a different search term.`
+                : "No skills in this category yet."}
+            </p>
+            {(query || selectedCategory) && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setQuery("")
+                  setSelectedCategory(null)
+                  setShowAll(false)
+                }}
+              >
+                Clear filters
+              </Button>
+            )}
           </div>
         ) : (
           <>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {visibleSkills.map((skill) => (
-                <SkillCard key={skill.slug} skill={skill} />
+              {visibleSkills.map((skill, i) => (
+                <div
+                  key={skill.slug}
+                  className="animate-in"
+                  style={{ animationDelay: `${i * 30}ms`, animationFillMode: "backwards" }}
+                >
+                  <SkillCard skill={skill} />
+                </div>
               ))}
             </div>
 
