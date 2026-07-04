@@ -7,7 +7,6 @@ import { getSkillBySlug, skills } from "@/data/skills"
 import { useState } from "react"
 import { useToast } from "@/components/toast-provider"
 import { Highlight, themes } from "prism-react-renderer"
-import { trackView } from "@/lib/analytics"
 
 const tagColors: Record<string, string> = {
   typescript: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -360,8 +359,6 @@ export function SkillDetailPage() {
       }
       twitterCard.setAttribute("content", "summary_large_image")
 
-      trackView(skill.slug)
-
       return () => {
         document.title = "bilal-skills — AI Agent Skills"
       }
@@ -454,43 +451,6 @@ export function SkillDetailPage() {
       <article className="prose prose-neutral dark:prose-invert max-w-none text-sm sm:text-base">
         {renderMarkdown(skill.skillContent)}
       </article>
-
-      {skill.examples && skill.examples.length > 0 && (
-        <>
-          <Separator className="my-8 sm:my-10" />
-          <section>
-            <h2 className="mb-4 text-lg sm:text-xl font-semibold font-serif">Usage Examples</h2>
-            <div className="space-y-4">
-              {skill.examples.map((example, i) => (
-                <div key={i} className="rounded-md border bg-card overflow-hidden">
-                  <div className="px-4 py-3 border-b bg-muted/30">
-                    <h3 className="font-medium text-sm">{example.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-0.5">{example.description}</p>
-                  </div>
-                  <div className="relative">
-                    <div className="absolute right-2 top-2 z-10">
-                      <CopyButton text={example.code} />
-                    </div>
-                    <Highlight theme={themes.nightOwl} code={example.code.trim()} language={resolveLang(example.language)}>
-                      {({ tokens, getLineProps, getTokenProps }) => (
-                        <pre className="p-4 font-mono text-xs sm:text-sm overflow-x-auto">
-                          {tokens.map((line, lineIndex) => (
-                            <div key={lineIndex} {...getLineProps({ line })}>
-                              {line.map((token, tokenIndex) => (
-                                <span key={tokenIndex} {...getTokenProps({ token })} />
-                              ))}
-                            </div>
-                          ))}
-                        </pre>
-                      )}
-                    </Highlight>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </>
-      )}
 
       {relatedSkills.length > 0 && (
         <>
