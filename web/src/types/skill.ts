@@ -7,4 +7,12 @@ export interface Skill {
   installCmd: string
   author: string
   skillContent: string
+  examples?: SkillExample[]
+}
+
+export interface SkillExample {
+  title: string
+  description: string
+  code: string
+  language: string
 }

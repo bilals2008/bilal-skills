@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, useLocation } from "react-router-dom"
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
@@ -6,6 +7,7 @@ import { getSkillBySlug, skills } from "@/data/skills"
 import { useState } from "react"
 import { useToast } from "@/components/toast-provider"
 import { Highlight, themes } from "prism-react-renderer"
+import { trackView } from "@/lib/analytics"
 
 const tagColors: Record<string, string> = {
   typescript: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -52,6 +54,51 @@ function CopyButton({ text }: { text: string }) {
         </svg>
       )}
     </Button>
+  )
+}
+
+function ShareButtons({ slug, name }: { slug: string; name: string }) {
+  const url = `https://bilal-skills.dev/skills/${slug}`
+  const text = `Check out "${name}" — an AI agent skill for better code`
+
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-xs text-muted-foreground">Share</span>
+      <a
+        href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex size-8 items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+        title="Share on Twitter"
+      >
+        <svg className="size-3.5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+      </a>
+      <a
+        href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex size-8 items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+        title="Share on LinkedIn"
+      >
+        <svg className="size-3.5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+        </svg>
+      </a>
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(url)
+        }}
+        className="inline-flex size-8 items-center justify-center rounded-md border bg-card text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+        title="Copy link"
+      >
+        <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
+      </button>
+    </div>
   )
 }
 
@@ -271,7 +318,55 @@ function renderInlineCode(text: string) {
 
 export function SkillDetailPage() {
   const { slug } = useParams<{ slug: string }>()
+  const location = useLocation()
   const skill = slug ? getSkillBySlug(slug) : undefined
+
+  useEffect(() => {
+    if (skill) {
+      document.title = `${skill.name} — bilal-skills`
+
+      const meta = document.querySelector('meta[name="description"]')
+      if (meta) meta.setAttribute("content", skill.description)
+
+      let ogImage = document.querySelector('meta[property="og:image"]')
+      if (!ogImage) {
+        ogImage = document.createElement("meta")
+        ogImage.setAttribute("property", "og:image")
+        document.head.appendChild(ogImage)
+      }
+      ogImage.setAttribute("content", `https://bilal-skills.dev/og?slug=${skill.slug}`)
+
+      let ogTitle = document.querySelector('meta[property="og:title"]')
+      if (!ogTitle) {
+        ogTitle = document.createElement("meta")
+        ogTitle.setAttribute("property", "og:title")
+        document.head.appendChild(ogTitle)
+      }
+      ogTitle.setAttribute("content", `${skill.name} — bilal-skills`)
+
+      let ogDesc = document.querySelector('meta[property="og:description"]')
+      if (!ogDesc) {
+        ogDesc = document.createElement("meta")
+        ogDesc.setAttribute("property", "og:description")
+        document.head.appendChild(ogDesc)
+      }
+      ogDesc.setAttribute("content", skill.description)
+
+      let twitterCard = document.querySelector('meta[name="twitter:card"]')
+      if (!twitterCard) {
+        twitterCard = document.createElement("meta")
+        twitterCard.setAttribute("name", "twitter:card")
+        document.head.appendChild(twitterCard)
+      }
+      twitterCard.setAttribute("content", "summary_large_image")
+
+      trackView(skill.slug)
+
+      return () => {
+        document.title = "bilal-skills — AI Agent Skills"
+      }
+    }
+  }, [skill, location.pathname])
 
   if (!skill) {
     return (
@@ -296,24 +391,23 @@ export function SkillDetailPage() {
         >
           ← Back to skills
         </Link>
-        <div className="flex items-center gap-2 min-w-0">
+        <ShareButtons slug={skill.slug} name={skill.name} />
+      </div>
+
+      <header className="mb-6 sm:mb-8">
+        <div className="mb-3 flex items-center gap-2">
+          <Badge variant="secondary">{skill.category}</Badge>
           <Link
             to={`/author/${skill.author}`}
-            className="inline-flex items-center gap-2 group/author"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <img
               src={`https://github.com/${skill.author}.png`}
               alt={skill.author}
-              className="size-5 rounded-full border border-border shrink-0 ring-2 ring-transparent group-hover/author:ring-primary/30 transition-all"
+              className="size-4 rounded-full border border-border"
             />
-            <span className="text-sm text-muted-foreground truncate group-hover/author:text-foreground transition-colors">{skill.author}</span>
+            @{skill.author}
           </Link>
-        </div>
-      </div>
-
-      <header className="mb-6 sm:mb-8">
-        <div className="mb-3">
-          <Badge variant="secondary">{skill.category}</Badge>
         </div>
         <h1 className="mb-2 text-2xl sm:text-3xl font-semibold tracking-tight font-serif">{skill.name}</h1>
         <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{skill.description}</p>
@@ -361,6 +455,43 @@ export function SkillDetailPage() {
         {renderMarkdown(skill.skillContent)}
       </article>
 
+      {skill.examples && skill.examples.length > 0 && (
+        <>
+          <Separator className="my-8 sm:my-10" />
+          <section>
+            <h2 className="mb-4 text-lg sm:text-xl font-semibold font-serif">Usage Examples</h2>
+            <div className="space-y-4">
+              {skill.examples.map((example, i) => (
+                <div key={i} className="rounded-md border bg-card overflow-hidden">
+                  <div className="px-4 py-3 border-b bg-muted/30">
+                    <h3 className="font-medium text-sm">{example.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">{example.description}</p>
+                  </div>
+                  <div className="relative">
+                    <div className="absolute right-2 top-2 z-10">
+                      <CopyButton text={example.code} />
+                    </div>
+                    <Highlight theme={themes.nightOwl} code={example.code.trim()} language={resolveLang(example.language)}>
+                      {({ tokens, getLineProps, getTokenProps }) => (
+                        <pre className="p-4 font-mono text-xs sm:text-sm overflow-x-auto">
+                          {tokens.map((line, lineIndex) => (
+                            <div key={lineIndex} {...getLineProps({ line })}>
+                              {line.map((token, tokenIndex) => (
+                                <span key={tokenIndex} {...getTokenProps({ token })} />
+                              ))}
+                            </div>
+                          ))}
+                        </pre>
+                      )}
+                    </Highlight>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
+
       {relatedSkills.length > 0 && (
         <>
           <Separator className="my-8 sm:my-10" />
@@ -381,8 +512,6 @@ export function SkillDetailPage() {
           </section>
         </>
       )}
-
-
     </div>
   )
 }

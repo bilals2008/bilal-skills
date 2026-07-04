@@ -6,6 +6,7 @@ import { ToastProvider } from "@/components/toast-provider"
 import { HomePage } from "@/pages/home"
 import { SkillDetailPage } from "@/pages/skill-detail"
 import { AuthorPage } from "@/pages/author"
+import { NotFoundPage } from "@/pages/not-found"
 import { AboutPage } from "@/pages/about"
 import { ContributingPage } from "@/pages/contributing"
 import { ChangelogPage } from "@/pages/changelog"
@@ -27,18 +28,8 @@ export function App() {
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contributing" element={<ContributingPage />} />
                 <Route path="/changelog" element={<ChangelogPage />} />
-
                 <Route path="/faq" element={<FAQPage />} />
-
-                <Route
-                  path="*"
-                  element={
-                    <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-                      <h1 className="mb-3 text-2xl font-semibold">404</h1>
-                      <p className="mb-6 text-muted-foreground">Page not found</p>
-                    </div>
-                  }
-                />
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </main>
             <Footer />

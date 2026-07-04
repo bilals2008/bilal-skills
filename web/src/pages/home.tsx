@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { skills, getCategories } from "@/data/skills"
 import { SkillCard } from "@/components/skills/skill-card"
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { useToast } from "@/components/toast-provider"
 import { useDebounce } from "@/lib/use-debounce"
+import { trackSearch } from "@/lib/analytics"
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
@@ -77,6 +78,12 @@ export function HomePage() {
   const hasMore = filtered.length > 20
 
   const isSearching = query !== debouncedQuery
+
+  useEffect(() => {
+    if (debouncedQuery && filtered.length > 0) {
+      trackSearch(debouncedQuery)
+    }
+  }, [debouncedQuery])
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">
