@@ -57,7 +57,7 @@ function CopyButton({ text }: { text: string }) {
 }
 
 function ShareButtons({ slug, name }: { slug: string; name: string }) {
-  const url = `https://bilal-skills.dev/skills/${slug}`
+  const url = `https://bilal-skills.netlify.app/skills/${slug}`
   const text = `Check out "${name}" — an AI agent skill for better code`
 
   return (
@@ -333,7 +333,7 @@ export function SkillDetailPage() {
         ogImage.setAttribute("property", "og:image")
         document.head.appendChild(ogImage)
       }
-      ogImage.setAttribute("content", `https://bilal-skills.dev/og?slug=${skill.slug}`)
+      ogImage.setAttribute("content", `https://bilal-skills.netlify.app/og?slug=${skill.slug}`)
 
       let ogTitle = document.querySelector('meta[property="og:title"]')
       if (!ogTitle) {
