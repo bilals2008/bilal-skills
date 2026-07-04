@@ -128,15 +128,12 @@ function renderMarkdown(content: string) {
         elements.push(
           <div key={`code-${i}`} className="my-3 sm:my-4 rounded-md border bg-card overflow-hidden">
             <div className="flex items-center justify-between border-b bg-muted/50 px-3 sm:px-4 py-1.5">
-              <span className="text-xs font-mono text-muted-foreground">{codeLanguage || "text"}</span>
+              <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{codeLanguage || "text"}</span>
               <CopyButton text={codeContent.trim()} />
             </div>
             <Highlight theme={themes.nightOwl} code={codeContent.trim()} language={lang}>
-              {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                <pre
-                  className="p-3 sm:p-4 font-mono text-xs sm:text-sm whitespace-pre-wrap break-words"
-                  style={{ ...style, background: "transparent" }}
-                >
+              {({ tokens, getLineProps, getTokenProps }) => (
+                <pre className="p-3 sm:p-4 font-mono text-xs sm:text-sm whitespace-pre-wrap break-words rounded-b-md">
                   {tokens.map((line, lineIndex) => (
                     <div key={lineIndex} {...getLineProps({ line })}>
                       {line.map((token, tokenIndex) => (
@@ -201,11 +198,43 @@ function renderMarkdown(content: string) {
         </li>
       )
     } else if (line.startsWith("| ")) {
+      const tableLines: string[] = []
+      let j = i
+      while (j < lines.length && lines[j].startsWith("| ")) {
+        tableLines.push(lines[j])
+        j++
+      }
+      const headerCells = tableLines[0].split("|").filter((c) => c.trim()).map((c) => c.trim())
+      const dataRows = tableLines.slice(2).map((row) =>
+        row.split("|").filter((c) => c.trim()).map((c) => c.trim())
+      )
       elements.push(
-        <div key={i} className="font-mono text-sm text-muted-foreground">
-          {line}
+        <div key={i} className="my-3 sm:my-4 overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr>
+                {headerCells.map((cell, ci) => (
+                  <th key={ci} className="border border-border bg-muted/50 px-3 py-2 text-left font-medium text-foreground">
+                    {renderInlineCode(cell)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {dataRows.map((row, ri) => (
+                <tr key={ri}>
+                  {row.map((cell, ci) => (
+                    <td key={ci} className="border border-border px-3 py-2 text-muted-foreground">
+                      {renderInlineCode(cell)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )
+      i = j - 1
     } else if (line.startsWith("> ")) {
       elements.push(
         <blockquote key={i} className="my-1 border-l-2 border-primary pl-4 text-muted-foreground italic">
