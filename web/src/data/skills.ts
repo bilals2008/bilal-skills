@@ -343,6 +343,9 @@ Always:
 - Keep components reusable
 - Avoid unnecessary re-renders
 - Follow clean folder structure
+- Use semantic design tokens (e.g., \`text-foreground\`, \`bg-muted\`, \`border-border\`, \`text-primary\`) instead of hardcoded colors (e.g., \`text-white\`, \`bg-black\`, \`border-gray-200\`)
+- Use shadcn CLI (\`npx shadcn@latest add <component>\`) to install components instead of manually creating them
+- Prefer shadcn/ui built-in components over custom implementations
 
 Never:
 
@@ -350,6 +353,8 @@ Never:
 - Use deprecated React APIs
 - Create huge components
 - Duplicate code
+- Hardcode color values like \`#000000\`, \`#ffffff\`, \`rgb()\`, \`hsl()\` — always use CSS variables / Tailwind tokens
+- Use \`bg-white\`, \`text-black\`, \`bg-gray-*\`, \`text-gray-*\` — use \`bg-background\`, \`text-foreground\`, \`bg-muted\`, \`text-muted-foreground\` instead
 
 ## Folder Structure
 
