@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react"
-import { Link } from "react-router-dom"
 import { skills, getCategories } from "@/data/skills"
 import { SkillCard } from "@/components/skills/skill-card"
 import { SkillCardSkeletonGrid } from "@/components/skills/skill-card-skeleton"

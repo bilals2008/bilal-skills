@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom"
 import { useState, useMemo } from "react"
-import { buttonVariants } from "@/components/ui/button"
+import { buttonVariants, Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { getSkillsByAuthor } from "@/data/skills"
