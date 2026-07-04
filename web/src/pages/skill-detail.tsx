@@ -59,6 +59,60 @@ function stripFrontmatter(content: string): string {
   return content.replace(/^---[\s\S]*?---\n*/, "")
 }
 
+const langMap: Record<string, string> = {
+  ts: "typescript",
+  tsx: "tsx",
+  js: "javascript",
+  jsx: "jsx",
+  json: "json",
+  bash: "bash",
+  sh: "bash",
+  shell: "bash",
+  zsh: "bash",
+  powershell: "powershell",
+  ps1: "powershell",
+  yaml: "yaml",
+  yml: "yaml",
+  css: "css",
+  scss: "scss",
+  html: "markup",
+  xml: "markup",
+  md: "markdown",
+  markdown: "markdown",
+  sql: "sql",
+  python: "python",
+  py: "python",
+  rust: "rust",
+  rs: "rust",
+  go: "go",
+  java: "java",
+  c: "c",
+  cpp: "cpp",
+  csharp: "csharp",
+  cs: "csharp",
+  php: "php",
+  ruby: "ruby",
+  swift: "swift",
+  kt: "kotlin",
+  kotlin: "kotlin",
+  graphql: "graphql",
+  gql: "graphql",
+  dockerfile: "docker",
+  docker: "docker",
+  gitignore: "gitignore",
+  ignore: "gitignore",
+  env: "ini",
+  toml: "toml",
+  ini: "ini",
+  text: "text",
+  plaintext: "text",
+  txt: "text",
+}
+
+function resolveLang(lang: string): string {
+  return langMap[lang.toLowerCase()] || lang
+}
+
 function renderMarkdown(content: string) {
   const clean = stripFrontmatter(content)
   const lines = clean.split("\n")
@@ -70,11 +124,11 @@ function renderMarkdown(content: string) {
   lines.forEach((line, i) => {
     if (line.startsWith("```")) {
       if (inCodeBlock) {
-        const lang = codeLanguage || "text"
+        const lang = resolveLang(codeLanguage || "text")
         elements.push(
           <div key={`code-${i}`} className="my-3 sm:my-4 rounded-md border bg-card overflow-hidden">
             <div className="flex items-center justify-between border-b bg-muted/50 px-3 sm:px-4 py-1.5">
-              <span className="text-xs font-mono text-muted-foreground">{lang}</span>
+              <span className="text-xs font-mono text-muted-foreground">{codeLanguage || "text"}</span>
               <CopyButton text={codeContent.trim()} />
             </div>
             <Highlight theme={themes.nightOwl} code={codeContent.trim()} language={lang}>
