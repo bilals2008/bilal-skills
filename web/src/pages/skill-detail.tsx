@@ -107,37 +107,37 @@ function renderMarkdown(content: string) {
 
     if (line.startsWith("# ")) {
       elements.push(
-        <h1 key={i} className="mb-4 text-2xl sm:text-3xl font-bold tracking-tight font-serif text-primary">
+        <h1 key={i} className="mb-2 text-2xl sm:text-3xl font-bold tracking-tight font-serif text-primary">
           {line.slice(2)}
         </h1>
       )
     } else if (line.startsWith("## ")) {
       elements.push(
-        <h2 key={i} className="mb-3 mt-6 sm:mt-8 text-lg sm:text-xl font-semibold font-serif">
+        <h2 key={i} className="mb-2 mt-5 text-lg sm:text-xl font-semibold font-serif">
           {line.slice(3)}
         </h2>
       )
     } else if (line.startsWith("### ")) {
       elements.push(
-        <h3 key={i} className="mb-2 mt-5 sm:mt-6 text-base sm:text-lg font-semibold">
+        <h3 key={i} className="mb-1.5 mt-4 text-base sm:text-lg font-semibold">
           {line.slice(4)}
         </h3>
       )
     } else if (line.startsWith("#### ")) {
       elements.push(
-        <h4 key={i} className="mb-2 mt-4 text-base font-semibold">
+        <h4 key={i} className="mb-1.5 mt-3 text-base font-semibold">
           {line.slice(5)}
         </h4>
       )
     } else if (line.startsWith("- ")) {
       elements.push(
-        <li key={i} className="ml-4 sm:ml-6 text-foreground leading-relaxed [&::marker]:text-primary">
+        <li key={i} className="ml-4 sm:ml-6 mb-2 text-foreground leading-relaxed [&::marker]:text-primary">
           {renderInlineCode(line.slice(2))}
         </li>
       )
     } else if (line.match(/^\d+\. /)) {
       elements.push(
-        <li key={i} className="ml-4 sm:ml-6 text-foreground leading-relaxed list-decimal [&::marker]:text-primary">
+        <li key={i} className="ml-4 sm:ml-6 mb-2 text-foreground leading-relaxed list-decimal [&::marker]:text-primary">
           {renderInlineCode(line.replace(/^\d+\. /, ""))}
         </li>
       )
@@ -149,15 +149,15 @@ function renderMarkdown(content: string) {
       )
     } else if (line.startsWith("> ")) {
       elements.push(
-        <blockquote key={i} className="my-2 border-l-2 border-primary pl-4 text-muted-foreground italic">
+        <blockquote key={i} className="my-1 border-l-2 border-primary pl-4 text-muted-foreground italic">
           {renderInlineCode(line.slice(2))}
         </blockquote>
       )
     } else if (line.trim() === "") {
-      elements.push(<div key={i} className="h-2" />)
+      elements.push(<div key={i} className="h-1" />)
     } else {
       elements.push(
-        <p key={i} className="text-foreground/80 leading-relaxed">
+        <p key={i} className="text-foreground/80 leading-relaxed mb-1">
           {renderInlineCode(line)}
         </p>
       )
