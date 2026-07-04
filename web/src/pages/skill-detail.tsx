@@ -7,6 +7,7 @@ import { getSkillBySlug, skills } from "@/data/skills"
 import { useState } from "react"
 import { useToast } from "@/components/toast-provider"
 import { Highlight, themes } from "prism-react-renderer"
+import { buttonVariants } from "@/components/ui/button"
 
 const tagColors: Record<string, string> = {
   typescript: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
@@ -370,9 +371,9 @@ export function SkillDetailPage() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 py-16 sm:py-20 text-center">
         <h1 className="mb-3 text-2xl font-semibold">Skill not found</h1>
         <p className="mb-6 text-muted-foreground">No skill matches that slug.</p>
-        <Button asChild>
-          <Link to="/">Back to all skills</Link>
-        </Button>
+        <Link to="/" className={buttonVariants({ variant: "default" })}>
+          Back to all skills
+        </Link>
       </div>
     )
   }

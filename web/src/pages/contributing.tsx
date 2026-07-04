@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 
 export function ContributingPage() {
@@ -100,11 +100,14 @@ Your skill instructions go here...
         </ul>
       </section>
 
-      <Button asChild>
-        <a href="https://github.com/bilals2008/bilal-skills" target="_blank" rel="noreferrer">
-          View on GitHub →
-        </a>
-      </Button>
+      <a
+        href="https://github.com/bilals2008/bilal-skills"
+        target="_blank"
+        rel="noreferrer"
+        className={buttonVariants({ variant: "default" })}
+      >
+        View on GitHub →
+      </a>
     </div>
   )
 }

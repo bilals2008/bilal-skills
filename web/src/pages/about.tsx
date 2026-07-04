@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { skills } from "@/data/skills"
 
@@ -87,12 +87,12 @@ export function AboutPage() {
       </section>
 
       <div className="flex gap-3">
-        <Button asChild>
-          <Link to="/">Browse Skills</Link>
-        </Button>
-        <Button variant="outline" asChild>
-          <Link to="/contributing">Contribute</Link>
-        </Button>
+        <Link to="/" className={buttonVariants({ variant: "default" })}>
+          Browse Skills
+        </Link>
+        <Link to="/contributing" className={buttonVariants({ variant: "outline" })}>
+          Contribute
+        </Link>
       </div>
     </div>
   )

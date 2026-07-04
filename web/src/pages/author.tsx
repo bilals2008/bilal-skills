@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom"
 import { useState, useMemo } from "react"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { getSkillsByAuthor } from "@/data/skills"
@@ -56,9 +56,9 @@ export function AuthorPage() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 py-16 sm:py-20 text-center">
         <h1 className="mb-3 text-2xl font-semibold">Author not found</h1>
         <p className="mb-6 text-muted-foreground">No skills found for this author.</p>
-        <Button asChild>
-          <Link to="/">Back to all skills</Link>
-        </Button>
+        <Link to="/" className={buttonVariants({ variant: "default" })}>
+          Back to all skills
+        </Link>
       </div>
     )
   }

@@ -1,12 +1,11 @@
 import { useState, useMemo } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { skills } from "@/data/skills"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 
 export function NotFoundPage() {
   const [query, setQuery] = useState("")
-  const navigate = useNavigate()
 
   const results = useMemo(() => {
     if (!query.trim()) return []
@@ -68,12 +67,12 @@ export function NotFoundPage() {
       </div>
 
       <div className="flex items-center justify-center gap-3">
-        <Button asChild variant="outline">
-          <Link to="/">Browse all skills</Link>
-        </Button>
-        <Button asChild>
-          <Link to="/">Go home</Link>
-        </Button>
+        <Link to="/" className={buttonVariants({ variant: "outline" })}>
+          Browse all skills
+        </Link>
+        <Link to="/" className={buttonVariants({ variant: "default" })}>
+          Go home
+        </Link>
       </div>
     </div>
   )

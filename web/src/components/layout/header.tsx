@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { useTheme } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 import { useState } from "react"
 
 const links = [
@@ -26,17 +27,16 @@ export function Header() {
 
         <nav className="hidden md:flex md:items-center md:gap-1">
           {links.map((link) => (
-            <Button
+            <Link
               key={link.to}
-              variant="ghost"
-              size="sm"
-              asChild
+              to={link.to}
               className={cn(
+                buttonVariants({ variant: "ghost", size: "sm" }),
                 location.pathname === link.to && "bg-accent text-accent-foreground"
               )}
             >
-              <Link to={link.to}>{link.label}</Link>
-            </Button>
+              {link.label}
+            </Link>
           ))}
           <Button
             variant="ghost"
@@ -77,31 +77,32 @@ export function Header() {
             )}
           </Button>
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="size-9">
-                <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path d="M3 12h18M3 6h18M3 18h18" />
-                </svg>
-                <span className="sr-only">Menu</span>
-              </Button>
-            </SheetTrigger>
+            <SheetTrigger
+              render={
+                <Button variant="ghost" size="icon" className="size-9">
+                  <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path d="M3 12h18M3 6h18M3 18h18" />
+                  </svg>
+                  <span className="sr-only">Menu</span>
+                </Button>
+              }
+            />
             <SheetContent side="top" className="w-full">
               <SheetTitle className="text-lg font-bold text-primary">bilal-skills</SheetTitle>
               <nav className="mt-8 flex flex-col gap-2">
                 {links.map((link) => (
-                  <Button
+                  <Link
                     key={link.to}
-                    variant="ghost"
-                    size="sm"
-                    asChild
+                    to={link.to}
+                    onClick={() => setOpen(false)}
                     className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
                       "justify-start text-base",
                       location.pathname === link.to && "bg-accent text-accent-foreground"
                     )}
-                    onClick={() => setOpen(false)}
                   >
-                    <Link to={link.to}>{link.label}</Link>
-                  </Button>
+                    {link.label}
+                  </Link>
                 ))}
               </nav>
             </SheetContent>
